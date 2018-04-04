@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Login</title>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+</head>
+
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<form th:action="@{/login}" action="/login" method="POST" class="col-md-12">
+				<div class="imgcontainer">
+					<img th:src="@{/css/loginicon.png}" alt="Avatar" class="avatar"></img>
+				</div>
+				<div class="col-md-12">
+					<label for="username"><b>Username</b></label>
+						<input type="text" placeholder="Enter Username" name="username" id="username"></input>
+					<label for="password"><b>Password</b></label>
+						<input type="password" placeholder="Enter Password" name="password" id="password"></input>
+					<button type="submit">Login</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

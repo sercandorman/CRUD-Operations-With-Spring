@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sercan Dorman Spring Work</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/getrequest.js"></script>
+<script src="/postrequest.js"></script>
+<script src="/accordion.js"></script>
+</head>
+<body>
+<div class="container">
+
+	<!-- Baslik ve Hosgeldin Mesaji BASLANGIC | Title and Welcome Message Begin-->
+	<div class="row">
+		<blockquote>
+			<h3 class="title">CRUD Operations with Spring Boot/MVC/Security &amp; JQuery/Ajax Post-Get</h3>
+		</blockquote>
+	</div>
+	
+	<div class="row">
+		<div class="logout" onMouseOver="this.style.backgroundColor='#ddd'" onMouseOut="this.style.backgroundColor='#f1f1f1'">
+			Welcome <span th:text="${principal}" style="font-weight: bold"></span>
+				<button style="float: right" type="button" class="btn btn-danger btn-xs"
+				onclick="window.location.href='/logout'">Logout</button>
+		</div>
+	</div>
+		<!-- Baslik ve Hosgeldin Mesaji BITIS | Tittle and Welcome Message End-->
+		
+		<!-- KAYIT EKLEME BASLANGIC | Add Record Begin-->
+	<div class="row addRecord">
+		<div class="col-md-12 col-xs-12" sec:authorize="hasAuthority('ROLE_ADMIN')"> <!-- Sadece Admin'e gorunur | Visible only for Admin -->
+			<div class="accordion" style="width : 50%">
+				<div class="accordion-section">
+					<a class="accordion-section-title" href="#accordion-1">Add New Record</a>
+					<div id="accordion-1" class="accordion-section-content">
+						<form class="form-inline" id="customerForm" method="POST">
+							<div class="form-group">
+								<label for="name" style="margin-right: 5px">Name : </label>
+								<input type="text" class="form-control" id="name"
+									placeholder="Enter Name" name="name" style="margin-right: 20px"/>
+							</div>
+							<div class="form-group">
+								<label for="surname" style="margin-right: 5px">Surname : </label>
+								<input type="text" class="form-control" id="surname"
+									placeholder="Enter Surname" name="surname" style="margin-right: 10px"/>
+							</div>
+							<button type="submit" class="btn btn-primary btn-md">Add</button>
+						</form>
+					</div><!--end .accordion-section-content-->
+				</div><!--end .accordion-section-->
+			</div><!--end .accordion-->
+		</div>
+	</div>
+		<!-- KAYIT EKLEME BITIS | Add Record End-->
+
+	<div id="postResultDiv" style="width:200px; margin-top:10px"></div> <!-- KAYIT BASARILI ISE... | If adding is successful... -->
+		
+		
+	<div class="row col-md-12 col-xs-12"> <!-- KAYITLARI GOSTER VE GIZLE BASLANGIC | Show/Hide Records Begin-->
+		<div class="btn-group">
+			<button id="getAll" type="button" class="btn btn-info btn-sm">Show Records</button>
+			<button id="hideAll" type="button" class="btn btn-warning btn-sm">Hide Records</button>
+		</div>
+		<div class="row" id="getResultDiv" th:switch="${mod}"> <!-- Kayitlari Goruntule Duzenle Div'i Baslangic | Div of Show/Hide Records Begin-->
+			<div th:case="VIEW_RECORDS"> <!-- KAYITLARI GOSTER BASLANGIC | Show Record Begin-->
+				<table class="table table-hover col-md-12 col-xs-12" id="table" style="width:auto">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>NAME</th>
+							<th>SURNAME</th>
+							<th sec:authorize="hasAuthority('ROLE_ADMIN')"> &nbsp;Edit &nbsp;&nbsp;|&nbsp;&nbsp; Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="result : ${allRecords}">
+							<td th:text="${result.id}" id="tid"></td>
+							<td th:text="${result.name}" id="tname"></td>
+							<td th:text="${result.surname}" id="tsurname"></td>
+							<td><div sec:authorize="hasAuthority('ROLE_ADMIN')">
+									<a th:href="@{'/edit?id='+${result.id}}"> <!-- Bootstap Düzenle İkonu -->
+										<span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin: 0em 0.9em"></span>
+									</a>|
+									<a th:href="@{'/delete?id='+${result.id}}" 
+									onclick="return confirm('Are you sure you want to delete it?')"><!-- Bootstap Sil İkonu -->
+										<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
+										style="margin : 0em 0.9em">
+										</span>
+									</a>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div> <!-- KAYITLARI GOSTER BITIS | Show Records End-->
+			
+			<div th:case="EDIT_RECORDS"> <!-- KAYITLARI DUZENLE BASLANGIC | Edit Records Begin-->
+				<form class="form-horizontal" th:action="@{/update/}" method="POST">
+					<div class="form-group">
+						<label class="control-label col-sm-2">ID</label>
+						<div class="col-sm-10">
+							<input type="text" readonly="readonly" class="form-control"
+								th:value="${getOne.id}" id="id" name="id" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">Name</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								th:value="${getOne.name}" id="name" name="name" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">Surname</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								th:value="${getOne.surname}" id="surname" name="surname" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</form>
+			</div><!-- KAYITLARI DUZENLE BITIS | Edit Records End-->	
+		</div> <!-- Kayitlari Goruntule Duzenle Div'i Bitis | Div of Show/Hide Records End-->
+	</div> <!-- KAYITLARI GOSTER VE GIZLE BITIS | Show/Hide Records End-->
+		
+</div>
+</body>
+</html>
