@@ -22,6 +22,6 @@ In this project;
 
 have been used.
 
-The purpose of the project was to learn how to use the above technologies.
+The purpose of the project was to learn the above technologies.
 
-Video of how the project works or how look like : `COMING SOON`
+Video of how the project works and how look like : `COMING SOON`
