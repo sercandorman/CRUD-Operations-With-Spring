@@ -17,10 +17,10 @@ public class Person implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "AD")
+	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "SOYAD")
+	@Column(name = "SURNAME")
 	private String surname;
 
 	public String getName() {
