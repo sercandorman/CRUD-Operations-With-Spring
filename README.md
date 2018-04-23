@@ -24,4 +24,4 @@ have been used.
 
 The purpose of the project was to learn the above technologies.
 
-Video of how the project works and how look like : `COMING SOON`
+Video of how the project works and how look like : https://youtu.be/mFGugLRCuH0
