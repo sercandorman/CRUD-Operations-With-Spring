@@ -8,7 +8,7 @@ In this project;
 
 > `Maven`
 
-> `Juqery / Ajax`
+> `Jquery / Ajax`
 
 > `Html / Thymeleaf`
 
